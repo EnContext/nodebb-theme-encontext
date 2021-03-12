@@ -9,15 +9,16 @@ Forked from nodebb-theme-persona
 
 ### Environment setup
 
-1. Install Vagrant
-2. Run `vagrant up` in this directory. This will provision an Ubuntu 20 VM with NodeBB installed under the `/usr/src/app`.
-3. Run `vagrant ssh` to connect to the VM.
-4. Setup NodeBB by running:
+1.  Install VirtualBox
+2. Install Vagrant
+3. Run `vagrant up` in this directory. This will provision an Ubuntu 20 VM with NodeBB installed under the `/usr/src/app`.
+4. Run `vagrant ssh` to connect to the VM.
+5. Setup NodeBB by running:
 ```
 cd /usr/src/app
 ./nodebb setup
 ```
-5. Create a symbolic link from this folder to `node_modules` on the VM. This will allow you to edit this theme locally and automatically share the updates with the VM:
+6. Create a symbolic link from this folder to `node_modules` on the VM. This will allow you to edit this theme locally and automatically share the updates with the VM:
 ```
 ln -fs /vagrant /usr/src/app/node_modules/nodebb-theme-encontext
 ```
