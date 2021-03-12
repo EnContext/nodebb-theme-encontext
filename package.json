@@ -1,14 +1,14 @@
 {
-  "name": "nodebb-theme-persona",
+  "name": "nodebb-theme-encontext",
   "version": "11.0.1",
   "nbbpm": {
     "compatibility": "^1.17.0"
   },
-  "description": "Persona theme for NodeBB",
+  "description": "EnContext theme for NodeBB",
   "main": "library.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/psychobunny/nodebb-theme-persona"
+    "url": "https://github.com/psychobunny/nodebb-theme-encontext"
   },
   "keywords": [
     "nodebb",
@@ -36,7 +36,7 @@
   ],
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/psychobunny/nodebb-theme-persona/issues"
+    "url": "https://github.com/psychobunny/nodebb-theme-encontext/issues"
   },
   "dependencies": {
     "pulling": "^2.0.0",

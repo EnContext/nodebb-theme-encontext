@@ -1,5 +1,5 @@
 {
-	"id": "nodebb-theme-persona",
+	"id": "nodebb-theme-encontext",
 	"hooks": [
 		{ "hook": "filter:widgets.getAreas", "method": "defineWidgetAreas" },
 		{ "hook": "filter:config.get", "method": "getThemeConfig" },
@@ -8,7 +8,7 @@
 		{ "hook": "filter:topic.build", "method": "addUserToTopic" }
 	],
 	"scripts": [
-		"public/persona.js",
+		"public/encontext.js",
 		"public/modules/autohidingnavbar.js",
 		"public/modules/quickreply.js"
 	],

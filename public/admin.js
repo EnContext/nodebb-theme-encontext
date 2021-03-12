@@ -1,20 +1,20 @@
 'use strict';
 /* globals $, app */
 
-define('admin/plugins/persona', ['settings'], function(Settings) {
+define('admin/plugins/encontext', ['settings'], function(Settings) {
 
 	var ACP = {};
 
 	ACP.init = function() {
-		Settings.load('persona', $('.persona-settings'));
+		Settings.load('encontext', $('.encontext-settings'));
 
 		$('#save').on('click', function() {
-			Settings.save('persona', $('.persona-settings'), function() {
+			Settings.save('encontext', $('.encontext-settings'), function() {
 				app.alert({
 					type: 'success',
-					alert_id: 'persona-saved',
+					alert_id: 'encontext-saved',
 					title: 'Settings Saved',
-					message: 'Persona settings saved'
+					message: 'EnContext settings saved'
 				});
 			});
 		});
