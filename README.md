@@ -31,6 +31,11 @@ ln -fs /vagrant /usr/src/app/node_modules/nodebb-theme-encontext
 ```
 Vagrant is configured to run NodeBB at port 4567. To change, edit the `Vagrantfile` and run `vagrant reload`.
 
+### Killing NodeBB when it gets stuck on a port
+```
+fuser -n tcp -k 4567
+````
+
 ## Addons
 
 
