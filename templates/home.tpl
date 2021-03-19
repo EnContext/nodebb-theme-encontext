@@ -23,53 +23,66 @@
   </div>
 
   <div class="content">
-    <ul>
-        <li>
-            <form id="search-form" role="search" method="GET">
-                <div id="search-fields">
-                    <div class="form-group">
-                        <input autocomplete="off" type="text" class="form-control" placeholder="[[global:search]]" name="query" value="">
-                        <a href="#"><i class="fa fa-gears fa-fw advanced-search-link"></i></a>
-                    </div>
-                    <button type="submit" class="btn btn-default hide">[[global:search]]</button>
-                </div>
-            </form>
-            <div id="quick-search-container" class="quick-search-container hidden">
-                <div class="checkbox filter-category">
-                    <label>
-                        <input type="checkbox" checked><span class="name"></span>
-                    </label>
-                </div>
-                <div class="text-center loading-indicator"><i class="fa fa-spinner fa-spin"></i></div>
-                <div class="quick-search-results-container"></div>
-            </div>
-        </li>
-        <li class="visible-xs" id="search-menu">
-            <a href="{relative_path}/search">
-                <i class="fa fa-search fa-fw"></i> [[global:search]]
-            </a>
-        </li>
-    </ul>
+    <form id="searchBarWidget" class= "{hideOnTags} {hideOnUnread} {hideOnTopic} {hideOnHome} {hideOnCategories} {hideOnCategory} {hideOnRecent} {hideOnPopular}">
+      <div class="form-group" id="search-widget-fields">
+          <div class="input-group">
+              <input id="searchBarWidgetInput" type="text" class="form-control" placeholder="Search" name="query1" value="" autocomplete="off">
+              <a class="input-group-addon search-button">
+                  <i class="fa fa-search fa-fw"></i>
+              </a>
+          </div>
+      </div>
+      <ul class='search-bar-suggestions' style="display: none;">
+      <!-- BEGIN searchBarWidgetSuggestions -->
+          <li>
+              <a href='/topic/{searchBarWidgetSuggestions.topic.slug}'>
+                 <h5>
+                      {searchBarWidgetSuggestions.topic.title}
+                  </h5>
+                  <p>
+                      {searchBarWidgetSuggestions.contentText}
+                  </p>
+              </a>
+          </li>
+      <!-- END searchBarWidgetSuggestions -->
+      </ul>
+  </form>
+
     <h5>Get your questions answered</h5>
-  
-    <!-- IF canPost -->
-			<!-- IMPORT partials/buttons/newTopic.tpl -->
-			<!-- ELSE -->
-			<a component="category/post/guest" href="{config.relative_path}/login" class="btn btn-primary">Log in to ask your question</a>
-			<!-- ENDIF canPost -->
-			<a href="{config.relative_path}/{selectedFilter.url}" class="inline-block">
-				<div class="alert alert-warning hide" id="new-topics-alert"></div>
-			</a>
-  
+    <div class="topic-list-header btn-toolbar">
+      <div class="pull-left">
+        <!-- IF canPost -->
+        <!-- IMPORT partials/buttons/newTopic.tpl -->
+        <!-- ELSE -->
+        <a component="category/post/guest" href="{config.relative_path}/login" class="btn btn-primary">Ask your question</a>
+        <!-- ENDIF canPost -->
+      </div>
+    </div>
+
+
     <h5>What's New</h5>
+    <ul class="whats-new">
+      {{{each whatsNew}}}
+      <li class="new-topic">
+        <p>{whatsNew.title}</p>
+      </li>
+      {{{end}}}
+    </ul>
 
     <h5>Top Categories</h5>
     <ul class="categories">
       {{{each categories}}}
       <li>
-        <div class="category-img">
-      
+        
+        <!-- IF categories.backgroundImage -->
+        <div class="category-img" style="background-image: url({categories.backgroundImage})">
+          <div class="color-overlay"></div>
         </div>
+        <!-- ELSE -->
+        <div class="category-img" style="background-color: {categories.bgColor}">
+          <i class="fa {categories.icon}"></i>
+        </div>
+            <!-- ENDIF categories.backgroundImage -->
         <div class="category-label">
           {categories.name}
         </div>
@@ -79,7 +92,13 @@
     
   
     <h5>Education</h5>
-
+    <ul class="education">
+      {{{each education}}}
+      <li>
+        <p>{education.title}</p>
+      </li>
+      {{{end}}}
+    </ul>
   
     <h5>Hot in the Community</h5>
 

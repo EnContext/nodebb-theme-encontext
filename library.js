@@ -4,7 +4,7 @@ const nconf = require.main.require("nconf")
 const winston = require.main.require("winston")
 // const controllers = require('./templates/lib/controllers');
 // const recentController = require('src/controllers/recent');
-const Categories = require.main.require("./src/categories");
+const Categories = require.main.require("./src/categories")
 const db = require.main.require("./src/database")
 const plugin = {}
 
@@ -28,30 +28,42 @@ plugin.init = async (params) => {
       },
     ],
     async (req, res) => {
-      // Categories.getCategoryTopics({
-      // 	cid: 2,
-      // 	start: 0,
-      // 	stop: 10
-      // }, (err, result) => {
-      // 	winston.info(JSON.stringify(result));
-      // 	console.log(result)
-      // });
+      // Get What's new from EnContext Blogs
+      const whatsNew = await Categories.getCategoryTopics(
+        {
+          cid: 5,
+          start: 0,
+          stop: 1,
+        }
+      )
 
-	  const categoryList = await Categories.getAllCategories();
-    
-    winston.info(JSON.stringify(categoryList));
-    
+      winston.info(JSON.stringify(whatsNew.topics))
 
-	  // Get a list of
+      // Get our categories list
+      const categoryList = await Categories.getAllCategories();
 
-	  // Get the popular topics
-      let popular;
+      // Get education topics
+      const education = await Categories.getCategoryTopics(
+        {
+          cid: 6,
+          start: 0,
+          stop: 3,
+        }
+      )
+
+      // Get the popular topics
+      let popular
       popular = await controllers.recent.getData(req, "popular", "posts")
       winston.info(
         `[plugins/EnContext] Navigated to ${nconf.get("relative_path")}/home`
       )
-	//   winston.info(JSON.stringify(popular))
-      res.render("./home.tpl", { popular: popular.topics, categories: categoryList })
+      //   winston.info(JSON.stringify(popular))
+      res.render("./home.tpl", {
+        popular: popular.topics,
+        categories: categoryList,
+        whatsNew: whatsNew.topics,
+        education: education.topics
+      })
     }
   )
   routeHelpers.setupAdminPageRoute(
@@ -61,8 +73,6 @@ plugin.init = async (params) => {
     [],
     controllers.renderAdminPage
   )
-
-  callback();
 }
 
 /**

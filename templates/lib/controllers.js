@@ -2,7 +2,7 @@
 
 var Controllers = {};
 
-Controllers.renderAdminPage = function (req, res/* , next */) {
+Controllers.renderAdminPage = function (req, res, next) {
 	/*
 		Make sure the route matches your path to template exactly.
 		If your route was:
@@ -14,6 +14,7 @@ Controllers.renderAdminPage = function (req, res/* , next */) {
 	*/
 
 	res.render('admin/plugins/quickstart', {});
+	next();
 };
 
 module.exports = Controllers;
