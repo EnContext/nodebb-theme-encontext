@@ -2,7 +2,7 @@
 	"id": "nodebb-theme-encontext",
 	"hooks": [
 		{ "hook": "filter:widgets.getAreas", "method": "defineWidgetAreas" },
-		{ "hook": "filter:config.get", "method": "getThemeConfig" },
+	
 		{ "hook": "static:app.load", "method": "init" },
 		{ "hook": "filter:admin.header.build", "method": "addAdminNavigation" },
 		{ "hook": "filter:topic.build", "method": "addUserToTopic" }
@@ -12,6 +12,13 @@
 		"public/modules/autohidingnavbar.js",
 		"public/modules/quickreply.js"
 	],
+	"staticDirs": {
+		"images": "public/images"
+	},
+	"library": "./library.js",
+	"nbbpm": {
+        "compatibility": "^0.8.0"
+    },
 	"modules": {
 		"pulling.js": "node_modules/pulling/build/pulling-drawer.js"
 	},

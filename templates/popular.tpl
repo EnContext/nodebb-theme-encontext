@@ -57,5 +57,6 @@
 		<!-- IF config.usePagination -->
 			<!-- IMPORT partials/paginator.tpl -->
 		<!-- ENDIF config.usePagination -->
+		{topics}
 	</div>
 </div>

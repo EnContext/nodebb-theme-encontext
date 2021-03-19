@@ -146,9 +146,11 @@
 				<ul id="logged-out-menu" class="nav navbar-nav navbar-right">
 					<!-- IF allowRegistration -->
 					<li>
+						
 						<a href="{relative_path}/register">
-							<i class="fa fa-pencil fa-fw hidden-sm hidden-md hidden-lg"></i>
-							<span>[[global:register]]</span>
+							<button><i class="fa fa-pencil fa-fw hidden-sm hidden-md hidden-lg"></i>
+								<span>Sign Up</span>
+							</button>
 						</a>
 					</li>
 					<!-- ENDIF allowRegistration -->

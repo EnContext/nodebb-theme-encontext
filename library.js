@@ -1,134 +1,94 @@
-'use strict';
+"use strict"
 
-var meta = require.main.require('./src/meta');
-var user = require.main.require('./src/user');
+const nconf = require.main.require("nconf")
+const winston = require.main.require("winston")
+// const controllers = require('./templates/lib/controllers');
+// const recentController = require('src/controllers/recent');
+const Categories = require.main.require("./src/categories");
+const db = require.main.require("./src/database")
+const plugin = {}
 
-var library = {};
+plugin.init = async (params) => {
+  const { router, middleware, controllers } = params
+  const routeHelpers = require.main.require("./src/routes/helpers")
 
-library.init = function(params, callback) {
-	var app = params.router;
-	var middleware = params.middleware;
+  /**
+   * We create two routes for every view. One API call, and the actual route itself.
+   * Use the `setupPageRoute` helper and NodeBB will take care of everything for you.
+   *
+   * Other helpers include `setupAdminPageRoute` and `setupAPIRoute`
+   * */
+  routeHelpers.setupPageRoute(
+    router,
+    "/home",
+    middleware,
+    [
+      (req, res, next) => {
+        setImmediate(next)
+      },
+    ],
+    async (req, res) => {
+      // Categories.getCategoryTopics({
+      // 	cid: 2,
+      // 	start: 0,
+      // 	stop: 10
+      // }, (err, result) => {
+      // 	winston.info(JSON.stringify(result));
+      // 	console.log(result)
+      // });
 
-	app.get('/admin/plugins/encontext', middleware.admin.buildHeader, renderAdmin);
-	app.get('/api/admin/plugins/encontext', renderAdmin);
+	  const categoryList = await Categories.getAllCategories();
+    
+    winston.info(JSON.stringify(categoryList));
+    
 
-	callback();
-};
+	  // Get a list of
 
-library.addAdminNavigation = function(header, callback) {
-	header.plugins.push({
-		route: '/plugins/encontext',
-		icon: 'fa-paint-brush',
-		name: 'EnContext Theme'
-	});
+	  // Get the popular topics
+      let popular;
+      popular = await controllers.recent.getData(req, "popular", "posts")
+      winston.info(
+        `[plugins/EnContext] Navigated to ${nconf.get("relative_path")}/home`
+      )
+	//   winston.info(JSON.stringify(popular))
+      res.render("./home.tpl", { popular: popular.topics, categories: categoryList })
+    }
+  )
+  routeHelpers.setupAdminPageRoute(
+    router,
+    "/admin/plugins/encontext",
+    middleware,
+    [],
+    controllers.renderAdminPage
+  )
 
-	callback(null, header);
-};
-
-library.defineWidgetAreas = function(areas, callback) {
-	areas = areas.concat([
-		{
-			name: "Categories Sidebar",
-			template: "categories.tpl",
-			location: "sidebar"
-		},
-		{
-			name: "Category Sidebar",
-			template: "category.tpl",
-			location: "sidebar"
-		},
-		{
-			name: "Topic Sidebar",
-			template: "topic.tpl",
-			location: "sidebar"
-		},
-		{
-			name: "Categories Header",
-			template: "categories.tpl",
-			location: "header"
-		},
-		{
-			name: "Category Header",
-			template: "category.tpl",
-			location: "header"
-		},
-		{
-			name: "Topic Header",
-			template: "topic.tpl",
-			location: "header"
-		},
-		{
-			name: "Categories Footer",
-			template: "categories.tpl",
-			location: "footer"
-		},
-		{
-			name: "Category Footer",
-			template: "category.tpl",
-			location: "footer"
-		},
-		{
-			name: "Topic Footer",
-			template: "topic.tpl",
-			location: "footer"
-		},
-		{
-			name: "Account Header",
-			template: "account/profile.tpl",
-			location: "header"
-		},
-		{
-			name: "Users Header",
-			template: "users.tpl",
-			location: "header"
-		},
-		{
-			name: "Tags Header",
-			template: "tags.tpl",
-			location: "header"
-		},
-		{
-			name: "Tag Header",
-			template: "tag.tpl",
-			location: "header"
-		}
-	]);
-
-	callback(null, areas);
-};
-
-library.getThemeConfig = async function(config) {
-	const settings = await meta.settings.get('encontext');
-	config.hideSubCategories = settings.hideSubCategories === 'on';
-	config.hideCategoryLastPost = settings.hideCategoryLastPost === 'on';
-	config.enableQuickReply = settings.enableQuickReply === 'on';
-	return config;
-};
-
-function renderAdmin(req, res, next) {
-	res.render('admin/plugins/encontext', {});
+  callback();
 }
 
-library.addUserToTopic = function(data, callback) {
-	if (data.req.user) {
-		user.getUserData(data.req.user.uid, function(err, userdata) {
-			if (err) {
-				return callback(err);
-			}
+/**
+ * If you wish to add routes to NodeBB's RESTful API, listen to the `static:api.routes` hook.
+ * Define your routes similarly to above, and allow core to handle the response via the
+ * built-in helpers.formatApiResponse() method.
+ *
+ * In this example route, the `authenticate` middleware is added, which means a valid login
+ * session or bearer token (which you can create via ACP > Settings > API Access) needs to be
+ * passed in.
+ *
+ * To call this example route:
+ *   curl -X GET \
+ * 		http://example.org/api/v3/plugins/foobar/test \
+ * 		-H "Authorization: Bearer some_valid_bearer_token"
+ *
+ * Will yield the following response JSON:
+ * 	{
+ *		"status": {
+ *			"code": "ok",
+ *			"message": "OK"
+ *		},
+ *		"response": {
+ *			"foobar": "test"
+ *		}
+ *	}
+ */
 
-			data.templateData.loggedInUser = userdata;
-			callback(null, data);
-		});
-	} else {
-		data.templateData.loggedInUser =  {
-			uid: 0,
-			username: '[[global:guest]]',
-			picture: user.getDefaultAvatar(),
-			'icon:text': '?',
-			'icon:bgColor': '#aaa',
-		};
-		callback(null, data);
-	}
-};
-
-module.exports = library;
+module.exports = plugin
