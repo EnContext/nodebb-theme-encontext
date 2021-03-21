@@ -18,9 +18,14 @@ Forked from nodebb-theme-persona
 cd /usr/src/app
 ./nodebb setup
 ```
-6. Create a symbolic link from this folder to `node_modules` on the VM. This will allow you to edit this theme locally and automatically share the updates with the VM:
+DEPRECIATED Create a symbolic link from this folder to `node_modules` on the VM. This will allow you to edit this theme locally and automatically share the updates with the VM:
 ```
 ln -fs /vagrant /usr/src/app/node_modules/nodebb-theme-encontext
+```
+
+6. Add our module to the package.json
+```
+npm install --save /vagrant
 ```
 
 ### Running NodeBB
